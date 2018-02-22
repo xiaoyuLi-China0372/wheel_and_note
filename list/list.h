@@ -27,5 +27,5 @@ int list_append_tail(List *list, void *data);
 
 void list_free(List *list);
 
-#endif // QUEUE_H_INCLUDED
+#endif // LIST_H_INCLUDED
 
