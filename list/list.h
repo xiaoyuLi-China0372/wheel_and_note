@@ -1,5 +1,6 @@
 #ifndef LIST_H_INCLUDED
 #define LIST_H_INCLUDED
+#include <stdbool.h>
 
 typedef struct Element {
 	void *data;
@@ -19,7 +20,17 @@ static inline void list_set_curr_2_head(List *list)
     list->curr = list->head;
 }
 
-void* list_curr_data(List *list);
+static inline bool list_curr_is_end(List *list)
+{
+    return list->curr != NULL ? false : true;
+}
+
+static inline void *list_curr_data(List * list)
+{
+    void *ret = list->curr->data;
+    list->curr = list->curr->next;
+    return ret;
+}
 
 int list_append_head(List *list, void *data);
 

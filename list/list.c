@@ -15,17 +15,6 @@ List* list_create()
     return list;
 }
 
-void* list_curr_data(List *list)
-{
-    void *ret = NULL;
-    if (list->curr != NULL) {
-        ret = list->curr->data;
-        list->curr = list->curr->next;
-    }
-
-    return ret;
-}
-
 int list_append_head(List *list, void *data)
 {
     Element *elt = (Element *)malloc(sizeof(Element));
@@ -56,7 +45,7 @@ int list_append_tail(List *list, void *data)
 
     if (list->tail != NULL) {
         list->tail->next = elt;
-    } else if (list->head == NULL){
+    } else if (list->head == NULL) {
         list->head = elt;
     }
     list->tail = elt;
