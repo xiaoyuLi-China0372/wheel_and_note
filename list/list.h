@@ -1,6 +1,7 @@
 #ifndef LIST_H_INCLUDED
 #define LIST_H_INCLUDED
 #include <stdbool.h>
+#include <stddef.h>
 
 typedef struct Element {
 	void *data;
