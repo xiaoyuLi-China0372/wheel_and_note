@@ -37,6 +37,8 @@ int list_append_head(List *list, void *data);
 
 int list_append_tail(List *list, void *data);
 
+void list_reverse(List *list);
+
 void list_free(List *list);
 
 #endif // LIST_H_INCLUDED

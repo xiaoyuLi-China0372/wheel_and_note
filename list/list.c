@@ -53,6 +53,24 @@ int list_append_tail(List *list, void *data)
     return 0;
 }
 
+void list_reverse(List *list)
+{
+    Element *head = NULL;
+    Element *front = list->head;
+    Element *rear = NULL;
+    while (front->next != NULL) {
+        rear = front->next;
+        front->next = head;
+        head = front;
+        front = rear;
+    }
+    front->next = head;
+    head = front;
+
+    list->tail = list->head;
+    list->head = head;
+}
+
 void list_free(List *list)
 {
     Element *elt = list->head;
