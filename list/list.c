@@ -58,6 +58,10 @@ void list_reverse(List *list)
     Element *head = NULL;
     Element *front = list->head;
     Element *rear = NULL;
+
+    if (front == NULL)
+        return;
+
     while (front->next != NULL) {
         rear = front->next;
         front->next = head;
