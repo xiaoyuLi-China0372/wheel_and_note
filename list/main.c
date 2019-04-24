@@ -43,6 +43,23 @@ int main(int argc, char** argv)
         printf("\n");
     }
  
+    list_reverse(l1);
+    printf("\n");
+
+    //traversal all element
+    list_set_curr_2_head(l1);
+    while (!list_curr_is_end(l1)) {
+        List *l2 = (List *)list_curr_data(l1);
+
+        list_set_curr_2_head(l2);
+        while (!list_curr_is_end(l2)) {
+            int *p = (int *)list_curr_data(l2);
+
+            printf("%d,", *p);
+        }
+        printf("\n");
+    }
+
     //free
     list_set_curr_2_head(l1);
     while (!list_curr_is_end(l1)) {
