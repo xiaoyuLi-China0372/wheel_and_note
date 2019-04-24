@@ -7,8 +7,9 @@
 int main(int argc, char** argv)
 {
     if (argc < 3) {
-        printf("./run bin_file txt_file\n");
-        printf("./run txt_file bin_file -r\n");
+        const char *app_name = baseName(argv[0]);
+        printf("%s bin_file header_file\n", app_name);
+        printf("%s txt_file bin_file -r\n", app_name);
         return -1;
     }
 

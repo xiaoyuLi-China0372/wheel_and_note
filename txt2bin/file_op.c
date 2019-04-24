@@ -1,13 +1,27 @@
 #include "file_op.h"
 #include <sys/stat.h>
+#include <errno.h>
+#include <string.h>
 
 uint32_t get_file_size(const char *path)
 {
     uint32_t fileSize = 0;
     struct stat statbuff;
-    if(stat(path, &statbuff) < 0){
-        printf("ERROR: get file size fails\n");
-    }else{
+    if (stat(path, &statbuff) < 0){
+        printf("%s: stat errno:%d\n", path, errno);
+        FILE *file = fopen(path, "rb");
+        if (file == NULL)
+            printf("ERROR: fopen:%s\n", path);
+        int rc = fseek(file, 0, SEEK_END);
+        if (rc)
+            printf("ERROR: fseek end\n");
+
+        fileSize = ftell(file);
+
+        rc = fclose(file);
+        if (rc)
+            printf("ERROR : fclose\n");
+    } else {
         fileSize = statbuff.st_size;
     }
     return fileSize;
@@ -72,6 +86,17 @@ void write_debug_data(char *fileName, uint8_t *buf, int size)
         printf("ERROR: fseek\n");
     }
 
+    const char *base_name = baseName(fileName);
+    char data_name[strlen(base_name) + 1];
+    strcpy(data_name, base_name);
+    for (char *ptr = data_name; *ptr != '\0'; ptr++) {
+        if (*ptr == '.') {
+            *ptr = '\0';
+            break;
+        }
+    }
+
+    fprintf(file, "unsigned char %s[] = {\n", data_name);
     uint8_t *ptr = buf;
     for (int i = 0; i < size / col_n; i++) {
         for (int j = 0; j < col_n; j++) {
@@ -82,7 +107,7 @@ void write_debug_data(char *fileName, uint8_t *buf, int size)
     for (int i = 0; i < size % col_n; i++) {
         fprintf(file, "0x%02x, ", *ptr++);
     }
-    fprintf(file, "\n");
+    fprintf(file, "};\n");
 
     rc = fclose(file);
     if (rc) {
@@ -118,3 +143,15 @@ int read_debug_data(char *fileName, uint8_t *buf, int size)
     return i;
 }
 
+const char *baseName(const char *path)
+{
+    const char *base = path;
+    if (base != NULL) {
+        while(*path != '\0') {
+            if (*path == '/')
+                base = path + 1;
+            path++;
+        }
+    }
+    return base;
+}
